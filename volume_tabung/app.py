@@ -1,181 +1,95 @@
 import streamlit as st
 import math
 
+def hitung_volume_tabung(jari_jari, tinggi):
+    """
+    Menghitung volume tabung berdasarkan jari-jari dan tinggi.
+    """
+    luas_alas = math.pi * (jari_jari ** 2)
+    volume = luas_alas * tinggi
+    return luas_alas, volume
+
 # --- Konfigurasi Halaman Streamlit ---
 st.set_page_config(
     page_title="Kalkulator Volume Tabung",
-    layout="centered",
-    initial_sidebar_state="collapsed",
-    # Gunakan emoji sebagai ikon tab browser
-    icon="📏"
+    page_icon=" cylindrical_roman_temple", # Icon untuk tab browser
+    layout="centered", # Layout halaman bisa wide atau centered
+    initial_sidebar_state="expanded" # Sidebar defaultnya terbuka
 )
 
-# --- CSS Kustom untuk Tampilan Lebih Menarik ---
-st.markdown("""
-<style>
-    /* Latar belakang aplikasi keseluruhan */
-    .stApp {
-        background-color: #f0f8ff; /* Warna biru muda pastel */
-        color: #333333;
-    }
-    /* Kontainer utama aplikasi */
-    .main .block-container {
-        padding-top: 3rem;
-        padding-right: 1rem;
-        padding-left: 1rem;
-        padding-bottom: 3rem;
-    }
-    /* Judul utama */
-    h1 {
-        color: #004d99; /* Biru gelap */
-        text-align: center;
-        font-family: 'Poppins', sans-serif;
-        font-size: 2.8em;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        margin-bottom: 0.5em;
-    }
-    /* Sub-judul dan teks pendukung */
-    .stMarkdown p {
-        font-size: 1.1em;
-        line-height: 1.6;
-        text-align: center;
-        color: #555555;
-    }
-    /* Input Angka */
-    .stNumberInput div input {
-        background-color: #ffffff;
-        border: 2px solid #a8dadc; /* Biru kehijauan */
-        border-radius: 10px;
-        padding: 12px 15px;
-        font-size: 1.1em;
-        color: #333333;
-        box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-    }
-    .stNumberInput div input:focus {
-        border-color: #457b9d; /* Biru lebih gelap saat fokus */
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    }
-    /* Tombol */
-    .stButton > button {
-        background-color: #2a9d8f; /* Hijau toska */
-        color: white;
-        font-size: 1.2em;
-        padding: 12px 25px;
-        border-radius: 10px;
-        border: none;
-        box-shadow: 3px 3px 6px rgba(0,0,0,0.2);
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-        font-weight: bold;
-        width: 100%; /* Membuat tombol selebar kolom */
-    }
-    .stButton > button:hover {
-        background-color: #218579; /* Hijau toska lebih gelap saat hover */
-        transform: translateY(-2px);
-        box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
-    }
-    /* Pesan Sukses */
-    .stSuccess {
-        background-color: #d4edda; /* Hijau muda */
-        color: #155724; /* Hijau gelap */
-        border-left: 8px solid #28a745; /* Hijau cerah */
-        padding: 15px;
-        border-radius: 8px;
-        font-size: 1.2em;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 20px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-    }
-    /* Pesan Peringatan */
-    .stWarning {
-        background-color: #fff3cd; /* Kuning muda */
-        color: #856404; /* Kuning gelap */
-        border-left: 8px solid #ffc107; /* Kuning cerah */
-        padding: 15px;
-        border-radius: 8px;
-        font-size: 1.1em;
-        text-align: center;
-        margin-top: 20px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-    }
-    /* Gambar ilustrasi */
-    .stImage {
-        border-radius: 15px;
-        box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
-        margin-bottom: 1.5em;
-    }
-    /* Footer */
-    .footer {
-        text-align: center;
-        margin-top: 3rem;
-        padding-top: 1rem;
-        border-top: 1px solid #cccccc;
-        color: #777777;
-        font-size: 0.9em;
-    }
-</style>
-""", unsafe_allow_html=True)
+# --- Judul dan Deskripsi ---
+st.title(" 🧪 Kalkulator Volume Tabung Interaktif")
+st.markdown("---")
+st.write("""
+Aplikasi ini akan membantu Anda menghitung volume tabung dengan mudah.
+Cukup masukkan nilai **jari-jari** dan **tinggi** tabung, lalu lihat hasilnya!
+""")
 
-# --- Konten Aplikasi ---
+# --- Input Pengguna ---
+st.header("Masukkan Dimensi Tabung")
 
-st.title("💡 Hitung Volume Tabung Bareng Yuk! 💡")
+# Menggunakan kolom untuk tata letak yang lebih baik
+col1, col2 = st.columns(2)
 
-st.markdown("""
-<p>Halo, para penjelajah matematika! 👋 Di sini, kita akan seru-seruan menghitung volume tabung.</p>
-<p>Cukup masukkan berapa <strong>jari-jari</strong> alasnya dan <strong>tinggi</strong> tabungnya, nanti kita lihat hasilnya!</p>
-""", unsafe_allow_html=True)
-
-# Gambar ilustrasi tabung (gunakan URL gambar online atau local jika sudah di-deploy)
-# Untuk deploy, sebaiknya gunakan gambar yang sudah ada di repo Anda atau URL online.
-# Jika Anda punya gambar 'cylinder.png' di folder yang sama saat deploy, bisa gunakan:
-# st.image("cylinder.png", caption="Ilustrasi Tabung", use_column_width=True)
-# Contoh menggunakan URL gambar placeholder:
-st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cylinder_3D.svg/1200px-Cylinder_3D.svg.png",
-         caption="Ini dia bentuk tabung yang akan kita hitung volumenya!",
-         use_column_width=True)
-
-st.markdown("---") # Garis pemisah
-
-st.markdown("### Masukkan Ukuran Tabungmu di Bawah Ini:")
-
-# Input dari pengguna dengan kolom untuk tampilan yang rapi
-col_jari_jari, col_tinggi = st.columns(2)
-
-with col_jari_jari:
+with col1:
     jari_jari = st.number_input(
-        "📏 Jari-jari Alas (cm)",
+        "**Jari-jari (r)**",
         min_value=0.0,
-        format="%.2f",
-        help="Jarak dari titik tengah alas tabung ke tepinya."
+        value=5.0,
+        step=0.1,
+        help="Jarak dari pusat lingkaran ke tepi alas tabung."
     )
 
-with col_tinggi:
+with col2:
     tinggi = st.number_input(
-        "📐 Tinggi Tabung (cm)",
+        "**Tinggi (t)**",
         min_value=0.0,
-        format="%.2f",
-        help="Jarak dari alas ke tutup tabung."
+        value=10.0,
+        step=0.1,
+        help="Jarak vertikal dari alas ke tutup tabung."
     )
-
-# Tombol untuk menghitung
-st.markdown("---") # Garis pemisah
-col_btn1, col_btn2, col_btn3 = st.columns([1,2,1]) # Kolom untuk menengahkan tombol
-
-with col_btn2:
-    if st.button("✨ Hitung Volume Sekarang! ✨"):
-        if jari_jari > 0 and tinggi > 0:
-            volume = math.pi * (jari_jari**2) * tinggi
-            st.success(f"🥳 Wow! Volume tabungmu adalah **{volume:.2f} cm³**. Hebat!")
-            st.balloons() # Efek balon yang menyenangkan
-            st.snow()    # Efek salju untuk perayaan
-        else:
-            st.warning("🚨 Ups! Jari-jari dan Tinggi harus lebih besar dari nol. Coba lagi ya!")
 
 st.markdown("---")
-st.markdown("""
-<div class="footer">
-    Dibuat oleh Luthfy Arum Rifqi.
-</div>
-""", unsafe_allow_html=True)
+
+# --- Tombol Hitung ---
+if st.button("🚀 Hitung Volume!"):
+    if jari_jari <= 0 or tinggi <= 0:
+        st.error("Jari-jari dan tinggi harus lebih besar dari nol.")
+    else:
+        luas_alas, volume = hitung_volume_tabung(jari_jari, tinggi)
+
+        st.success("🎉 Hasil Perhitungan!")
+
+        # Menampilkan langkah-langkah perhitungan dengan warna
+        st.subheader("Detail Perhitungan:")
+        st.info(f"**Langkah 1: Hitung Luas Alas**")
+        st.code(f"Rumus Luas Alas = π * r²")
+        st.markdown(f"Luas Alas = `{math.pi:.4f}` * `{jari_jari}`² = `{luas_alas:.2f}`")
+
+        st.info(f"**Langkah 2: Hitung Volume Tabung**")
+        st.code(f"Rumus Volume = Luas Alas * Tinggi")
+        st.markdown(f"Volume = `{luas_alas:.2f}` * `{tinggi}` = **`{volume:.2f}`**")
+
+        st.balloons() # Efek balon saat hasil muncul
+
+        st.markdown(f"""
+        <div style="background-color:#e0ffe0; padding: 15px; border-radius: 10px; border: 2px solid #66bb6a;">
+            <h3 style="color:#2e7d32;">Kesimpulan:</h3>
+            <p style="font-size:18px;">
+                Volume tabung dengan jari-jari <b>{jari_jari}</b> dan tinggi <b>{tinggi}</b> adalah
+                <b style="color:#c62828; font-size:20px;">{volume:.2f}</b> satuan kubik.
+            </p>
+            <p style="font-size:14px; color:#555;">
+                *Pastikan satuan volume sesuai dengan satuan input Anda (misal cm³ jika menggunakan cm).*
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# --- Sidebar (untuk informasi tambahan atau riwayat) ---
+st.sidebar.title("ℹ️ Tentang Aplikasi Ini")
+st.sidebar.info(
+    "Aplikasi ini dibuat menggunakan Streamlit untuk demonstrasi kalkulator volume tabung. "
+    "Dirancang agar interaktif dan mudah dipahami. "
+)
+st.sidebar.markdown("---")
+st.sidebar.text("© 2025 Python Programmer")
