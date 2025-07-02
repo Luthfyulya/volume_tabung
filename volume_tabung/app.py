@@ -1,7 +1,7 @@
 import streamlit as st
 import math
 
-st.set_page_config(page_title="Kalkulator Volume Tabung", layout="centered", icon=" cilindro.png") # Added icon
+st.set_page_config(page_title="🧮Kalkulator Volume Tabung", layout="centered", icon=" cilindro.png") # Added icon
 
 # Custom CSS for styling
 st.markdown("""
